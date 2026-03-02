@@ -15,8 +15,8 @@ export const analyzeRiskForProject = async (userId, projectId) => {
   if (!project.tasks.length)
     throw new HttpError(400, "No tasks found for project");
 
-  if (!ENV.RISK_API_URL || !ENV.RISK_API_KEY)
-    throw new HttpError(500, "Risk API not configured");
+  // if (!ENV.RISK_API_URL || !ENV.RISK_API_KEY)
+  //   throw new HttpError(500, "Risk API not configured");
 
   const payload = {
     project: {
