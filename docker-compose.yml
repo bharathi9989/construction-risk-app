@@ -21,10 +21,13 @@ services:
     env_file:
       - ./backend/.env
 
-  frontend:
-    build: ./frontend
-    container_name: risk-frontend
-    restart: always
+  ffrontend:
+  build:
+    context: ./frontend
+    args:
+      VITE_API_URL: /api
+  container_name: risk-frontend
+  restart: always
 
   nginx:
     image: nginx:alpine
