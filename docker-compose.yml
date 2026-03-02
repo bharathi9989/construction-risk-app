@@ -21,13 +21,15 @@ services:
     env_file:
       - ./backend/.env
 
-  ffrontend:
+  frontend:
   build:
     context: ./frontend
     args:
       VITE_API_URL: /api
   container_name: risk-frontend
   restart: always
+  expose:
+    - "5173"
 
   nginx:
     image: nginx:alpine
