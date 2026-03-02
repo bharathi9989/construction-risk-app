@@ -1,4 +1,0 @@
-Task Name,Duration,Dependency
-Foundation,20,
-Structure,30,Foundation
-Electrical,15,Structure
