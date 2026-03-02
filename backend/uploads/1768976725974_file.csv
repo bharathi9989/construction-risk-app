@@ -1,0 +1,4 @@
+name,duration,dependency
+Excavation,5,None
+Foundation,10,Excavation
+Walls,7,Foundation

@@ -1,0 +1,4 @@
+Task Name,Duration,Dependency
+Foundation Work,10,
+Structure,15,Foundation Work
+Roofing,7,Structure

@@ -1,0 +1,57 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  username  String
+  password  String
+  role      String  @default("ENGINEER")   
+  projects  Project[]
+}
+
+model Project {
+  id         Int           @id @default(autoincrement())
+  name       String
+  userId     Int
+  user       User          @relation(fields: [userId], references: [id])
+  tasks      Task[]
+  riskResult RiskResult?
+  uploadedFiles UploadedFile[]   // 👈 ADD THIS LINE
+}
+
+model Task {
+  id         Int     @id @default(autoincrement())
+  projectId  Int
+  name       String
+  duration   Int?
+  dependency String?
+  project    Project @relation(fields: [projectId], references: [id])
+}
+
+model RiskResult {
+  id                  Int      @id @default(autoincrement())
+  projectId           Int      @unique
+  delayProb           Float?
+  costRisk            Float?
+  materialRiskScore   Float?
+  laborRiskScore      Float?
+  tasksRisk           Json?
+  recommendations     Json?
+  project             Project  @relation(fields: [projectId], references: [id])
+}
+model UploadedFile {
+  id        Int      @id @default(autoincrement())
+  filename  String
+  path      String
+  projectId Int
+  project   Project  @relation(fields: [projectId], references: [id])
+  uploadedAt DateTime @default(now())
+}
