@@ -1,0 +1,235 @@
+🏗 Construction Risk Predictor Dashboard
+
+📌 Overview
+
+The Construction Risk Predictor Dashboard is a full-stack web application that helps construction managers evaluate project risks such as:
+	•	Delay Probability
+	•	Cost Risk
+	•	Material Risk Score
+	•	Labor Risk Score
+	•	Task-Level Risk Insights
+	•	AI-Based Recommendations
+	•	Downloadable PDF Risk Reports
+
+Users can create projects, add dependent tasks, analyze risks using a Risk Predictor API (mock AI), and generate structured risk reports.
+
+The system is fully containerized using Docker and deployed on AWS EC2 behind an Nginx reverse proxy.
+
+⸻
+
+🛠 Tech Stack
+
+Frontend
+	•	React (Vite)
+	•	Axios
+	•	Context API (Authentication)
+
+Backend
+	•	Node.js
+	•	Express.js
+	•	Prisma ORM
+	•	PostgreSQL
+
+Infrastructure
+	•	Docker
+	•	Docker Compose
+	•	Nginx (Reverse Proxy)
+	•	AWS EC2
+
+⸻
+
+🧠 Architecture
+
+High-Level Flow
+
+User (Browser)
+↓
+Nginx Reverse Proxy
+↓
+Frontend Container (React Build)
+↓
+Backend Container (Express API)
+↓
+PostgreSQL Database
+↓
+Mock Risk Predictor API
+
+⸻
+
+Request Routing
+	•	/ → Frontend (React App)
+	•	/api/* → Backend (Express API)
+	•	/mock-ai/* → Mock AI Risk Service
+
+⸻
+
+🔌 API Routes
+
+🔐 Authentication
+	•	POST /api/auth/signup → Register user
+	•	POST /api/auth/login → Login user
+	•	GET /api/auth/me → Get logged-in user
+
+Authentication uses JWT stored in localStorage and sent via Authorization header.
+
+⸻
+
+📁 Projects
+	•	POST /api/projects → Create project
+	•	GET /api/projects → List projects
+	•	GET /api/projects/:id → Get project details
+
+⸻
+
+🗂 Tasks
+	•	POST /api/task/:projectId → Add task
+	•	GET /api/task/:projectId → Get tasks
+
+Each task contains:
+	•	Name
+	•	Duration
+	•	Dependency
+
+⸻
+
+📊 Risk Analysis
+	•	POST /api/risk/:projectId → Analyze risk
+	•	GET /api/risk/:projectId → Get stored risk
+	•	GET /api/risk/:projectId/report → Download PDF report
+
+⸻
+
+🤖 Risk Predictor API Communication
+	1.	Backend retrieves project and tasks from PostgreSQL.
+	2.	Constructs payload:
+      {
+      "project": { "id": 1, "name": "Bridge Project" },
+      "tasks": [...]
+      }
+
+      	3.	Sends POST request to RISK_API_URL.
+	4.	Receives AI response:
+	•	delayProb
+	•	costRisk
+	•	materialRiskScore
+	•	laborRiskScore
+	•	tasksRisk[]
+	•	recommendations[]
+	5.	Saves results in RiskResult table.
+	6.	Returns structured JSON to frontend.
+
+Currently, the system uses a Mock AI API for simulation.
+
+⸻
+
+🗄 Database Schema
+
+User
+	•	id
+	•	email
+	•	username
+	•	password
+	•	role
+
+Project
+	•	id
+	•	name
+	•	userId
+
+Task
+	•	id
+	•	projectId
+	•	name
+	•	duration
+	•	dependency
+
+RiskResult
+	•	projectId
+	•	delayProb
+	•	costRisk
+	•	materialRiskScore
+	•	laborRiskScore
+	•	tasksRisk (JSON)
+	•	recommendations (JSON)
+
+⸻
+
+🐳 Docker Architecture
+
+The system runs 4 containers:
+	1.	risk-db → PostgreSQL
+	2.	risk-backend → Express API
+	3.	risk-frontend → React build served by Nginx
+	4.	risk-nginx → Reverse proxy
+
+Docker Compose manages networking and orchestration.
+
+⸻
+
+🌍 Deployment
+	•	Hosted on AWS EC2
+	•	Reverse proxy using Nginx
+	•	Containers auto-restart enabled
+	•	Prisma migrations run during container startup
+
+How To Run Locally
+
+1️⃣ Clone Repository
+git clone <https://github.com/bharathi9989/construction-risk-app.git>
+cd construction-risk-app
+
+2️⃣ Create Backend Environment File
+PORT=2000
+DATABASE_URL=postgresql://postgres:postgres@db:5432/riskdb
+JWT_SECRET=your_secret
+NODE_ENV=development
+RISK_API_URL=http://localhost:2000/mock-ai/analyze
+RISK_API_KEY=dummy
+
+3️⃣ Run Using Docker
+docker-compose up --build
+
+4️⃣ Open Application
+http://localhost
+
+📄 PDF Report Generation
+
+Users can download a dynamically generated PDF containing:
+	•	Project details
+	•	Risk metrics
+	•	Task-level risk breakdown
+	•	AI recommendations
+
+⸻
+
+🔒 Security Features
+	•	JWT Authentication
+	•	Role-based access
+	•	Environment variable configuration
+	•	Reverse proxy routing
+	•	Docker network isolation
+
+⸻
+
+🎥 Demo Workflow
+	1.	User signs up / logs in
+	2.	Creates project
+	3.	Adds tasks
+	4.	Clicks “Analyze Risk”
+	5.	Views risk metrics
+	6.	Downloads PDF report
+
+⸻
+
+🏁 Conclusion
+
+This project demonstrates:
+	•	Full-stack architecture
+	•	REST API design
+	•	Database modeling with Prisma
+	•	Containerized deployment
+	•	Reverse proxy configuration
+	•	Cloud hosting (AWS EC2)
+	•	External API integration
+
+The system is modular, scalable, and production-aware, making it suitable for real-world construction risk evaluation scenarios.
