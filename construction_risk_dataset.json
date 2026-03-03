@@ -1,0 +1,33 @@
+{
+  "project": {
+    "id": 1,
+    "name": "Bridge Construction Project"
+  },
+  "tasks": [
+    {
+      "name": "Site Preparation",
+      "duration": 8,
+      "dependency": null
+    },
+    {
+      "name": "Foundation Work",
+      "duration": 15,
+      "dependency": "Site Preparation"
+    },
+    {
+      "name": "Pillar Construction",
+      "duration": 20,
+      "dependency": "Foundation Work"
+    },
+    {
+      "name": "Beam Installation",
+      "duration": 12,
+      "dependency": "Pillar Construction"
+    },
+    {
+      "name": "Roof Structuring",
+      "duration": 18,
+      "dependency": "Beam Installation"
+    }
+  ]
+}
